@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered student mentoring platform for academic management">
+    <title>Mentor Path AI | Academic Mentorship Platform
+    </title>
+    <!-- Favicon (Generated from placeholder) -->
+    <link rel="icon" href="https://placehold.co/64x64/6e8efb/a777e3?text=MPAI" type="image/png">
+    
+    <!-- Preload Resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"></noscript>
+    
+    <!-- Global Styles -->
+    <style id="global-styles">
+        :root {
+            --primary: #6e8efb;
+            --secondary: #a777e3;
+            --white: #ffffff;
+            --text-dark: #2d3748;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        #root {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Fallback for font loading */
+        .fonts-loading body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+    
+    <!-- Theme Color for Mobile -->
+    <meta name="theme-color" content="#6e8efb">
+</head>
+<body class="fonts-loading">
+    <div id="root">
+        <!-- Loading placeholder -->
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <div style="text-align: center;">
+                <div style="margin-bottom: 1rem;">
+                    <img src="https://placehold.co/120x120/6e8efb/ffffff?text=MPAI" 
+                         alt="Mentor Path AI Logo"
+                         style="border-radius: 50%;">
+                </div>
+                <p>Loading application...</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Dynamic Environment Configuration -->
+    <script>
+        window.env = {
+            API_BASE_URL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
+            AUTH_ENABLED: true,
+            DEFAULT_ROUTE: '/login'
+        };
+    </script>
+    
+    <!-- Font Load Observer -->
+    <script>
+        document.fonts.ready.then(() => {
+            document.body.classList.remove('fonts-loading');
+        });
+    </script>
+    
+    <!-- Error Boundary (Fallback) -->
+    <script>
+        window.addEventListener('error', (event) => {
+            const errorDisplay = document.createElement('div');
+            errorDisplay.style.position = 'fixed';
+            errorDisplay.style.bottom = '0';
+            errorDisplay.style.left = '0';
+            errorDisplay.style.right = '0';
+            errorDisplay.style.padding = '1rem';
+            errorDisplay.style.backgroundColor = 'rgba(255,0,0,0.2)';
+            errorDisplay.style.color = 'white';
+            errorDisplay.style.zIndex = '9999';
+            errorDisplay.textContent = 'Application error occurred. Please refresh.';
+            document.body.appendChild(errorDisplay);
+        });
+    </script>
+</body>
+</html>
