@@ -16,3 +16,20 @@
 - **Vibrant Gradient UI** (Modern & Responsive)
 
 ## 🛠 Tech Stack
+
+![Dashboard Preview](link_to_preview_image)
+
+
+## Tech Stack
+
+- **Frontend:** React, Bootstrap
+- **Backend:** Node.js, Express
+- **Database:** MongoDB
+- **AI Integration:** OpenAI API, TensorFlow
+- **Deployment:** AWS, Heroku
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/username/mentor-path-ai.git

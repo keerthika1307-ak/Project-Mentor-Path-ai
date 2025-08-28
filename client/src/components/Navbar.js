@@ -24,7 +24,7 @@ const Navbar = ({ userRole, userName }) => {
             
             <button 
               className="nav-link" 
-              onClick={() => navigate(`/${userRole}`)}
+              onClick={() => navigate(/${userRole}`)}
             >
               Dashboard
             </button>
@@ -37,7 +37,7 @@ const Navbar = ({ userRole, userName }) => {
             </button>
             
             <button 
-              className="nav-link logout-btn" 
+              className="nav-link logout-btn"
               onClick={handleLogout}
             >
               Logout
