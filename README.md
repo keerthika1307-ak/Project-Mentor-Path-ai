@@ -25,4 +25,4 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/username/mentor-path-ai.git
+   git clone https://github.com/keerthika1307-ak/Project-Mentor-Path-ai.git
