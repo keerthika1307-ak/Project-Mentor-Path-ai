@@ -24,7 +24,7 @@ const Navbar = ({ userRole, userName }) => {
             
             <button 
               className="nav-link" 
-              onClick={() => navigate(/${userRole}`)}
+              onClick={() => navigate(`/${userRole}`)}
             >
               Dashboard
             </button>
