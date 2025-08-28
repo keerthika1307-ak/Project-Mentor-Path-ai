@@ -6,7 +6,7 @@
 
 **AI-powered mentoring platform** for colleges with automated academic tracking, feedback, and alerts.
 
-![Dashboard Preview](https://placehold.co/1920x1080?text=Mentor+Path+AI+Dashboard+Preview+bright+gradient+UI)
+![Dashboard Preview](images/Login-page.png)
 
 ## 🔧 Key Features
 - **Role-based Dashboards** (Admin/Mentor/Student)
@@ -14,13 +14,6 @@
 - **Real-time Attendance Alerts** (SMS/Email via Twilio/Nodemailer)
 - **Performance Analytics** (CGPA Tracking, Backlog Prediction)
 - **Vibrant Gradient UI** (Modern & Responsive)
-
-## 🛠 Tech Stack
-
-![Dashboard Preview](link_to_preview_image)
-
-
-## Tech Stack
 
 - **Frontend:** React, Bootstrap
 - **Backend:** Node.js, Express
