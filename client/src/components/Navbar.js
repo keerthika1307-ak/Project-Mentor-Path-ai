@@ -48,5 +48,4 @@ const Navbar = ({ userRole, userName }) => {
     </nav>
   );
 };
-
 export default Navbar;
