@@ -64,3 +64,11 @@ process.on('SIGTERM', () => {
     process.exit(0);
   });
 });
+// backend/app.js or server.js
+const cron = require('node-cron');
+const { checkAndSendAttendanceAlerts } = require('./controllers/attendanceController');
+
+cron.schedule('0 9 * * *', () => {
+  console.log('Running daily attendance alert check at 9 AM');
+  checkAndSendAttendanceAlerts();
+});

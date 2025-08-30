@@ -124,4 +124,26 @@ const MentorDashboard = () => {
   );
 };
 
+// frontend/src/components/mentor/MentorDashboard.js
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import GenerateReport from './GenerateReport';
+// other imports
+
+const MentorDashboard = () => {
+  return (
+    <Router>
+      <div>
+        <nav>
+          <Link to="/mentor/generate-report">Generate Report</Link>
+          {/* other links */}
+        </nav>
+        <Routes>
+          <Route path="/mentor/generate-report" element={<GenerateReport />} />
+          {/* other routes */}
+        </Routes>
+      </div>
+    </Router>
+  );
+};
+
 export default MentorDashboard;

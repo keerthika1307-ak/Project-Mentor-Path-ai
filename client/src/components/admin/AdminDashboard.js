@@ -198,5 +198,27 @@ const AdminDashboard = () => {
     </div>
   );
 };
+// frontend/src/components/admin/AdminDashboard.js
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import AddStudent from './AddStudent';
+// other imports
+
+const AdminDashboard = () => {
+  return (
+    <Router>
+      <div>
+        <nav>
+          <Link to="/admin/add-student">Add Student</Link>
+          {/* other links */}
+        </nav>
+        <Routes>
+          <Route path="/admin/add-student" element={<AddStudent />} />
+          {/* other routes */}
+        </Routes>
+      </div>
+    </Router>
+  );
+};
+
 
 export default AdminDashboard;

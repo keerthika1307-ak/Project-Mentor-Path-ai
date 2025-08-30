@@ -195,4 +195,52 @@ const styles = {
   },
 };
 
+
+// backend/routes/admin.js
+const express = require('express');
+const router = express.Router();
+const Student = require('../models/Student'); // Assuming you have a Student model
+const { checkAdminAuth } = require('../middleware/auth'); // Middleware to check admin auth
+
+// Add new student
+router.post('/add-student', checkAdminAuth, async (req, res) => {
+  try {
+    const { name, email, rollNumber, course, academicYear, contact, address } = req.body;
+
+    // Basic validation
+    if (!name || !email || !rollNumber) {
+      return res.status(400).json({ message: 'Name, Email and Roll Number are required' });
+    }
+
+    // Check if student already exists
+    const existingStudent = await Student.findOne({ email });
+    if (existingStudent) {
+      return res.status(400).json({ message: 'Student with this email already exists' });
+    }
+
+    const newStudent = new Student({
+      name,
+      email,
+      rollNumber,
+      course,
+      academicYear,
+      contact,
+      address,
+      createdAt: new Date(),
+    });
+
+    await newStudent.save();
+
+    res.status(201).json({ message: 'Student added successfully', student: newStudent });
+  } catch (error) {
+    console.error('Error adding student:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+module.exports = router;
+
+
+
+
 export default Admin;
