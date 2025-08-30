@@ -7,6 +7,9 @@ import StudentDashboard from './components/StudentDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import Register from './components/Register';
 import RequireAuth from './components/RequireAuth';
+import AdminRoutes from './components/admin/AdminRoutes';
+import Login from './components/auth/Login';
+import MentorRoutes from './components/mentor/MentorRoutes';
 
 
 //import Login from './components/Login';

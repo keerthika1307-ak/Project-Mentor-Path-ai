@@ -42,3 +42,30 @@ exports.deleteCourse = async (req, res) => {
 };
 
 // Add other admin functions like managing mentors, students, etc.
+// backend/controllers/adminController.js
+
+exports.getReports = async (req, res) => {
+  try {
+    // Example: fetch counts from your database
+    const totalUsers = await User.countDocuments();
+    const totalStudents = await Student.countDocuments();
+    const totalMentors = await Mentor.countDocuments();
+    const mentorshipCount = await Mentorship.countDocuments();
+
+    // Example: new users in last 30 days
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const newUsersLast30Days = await User.countDocuments({ createdAt: { $gte: thirtyDaysAgo } });
+
+    res.json({
+      totalUsers,
+      totalStudents,
+      totalMentors,
+      mentorshipCount,
+      newUsersLast30Days,
+    });
+  } catch (error) {
+    console.error('Error fetching reports:', error);
+    res.status(500).json({ message: 'Failed to fetch reports' });
+  }
+};

@@ -12,6 +12,15 @@ const Admin = () => {
     mentorshipRelationships: 98,
     newUsers30Days: 23,
   };
+  // backend/routes/admin.js
+const express = require('express');
+const router = express.Router();
+const adminController = require('../controllers/adminController');
+const authMiddleware = require('../middleware/authMiddleware');
+
+router.get('/reports', authMiddleware, adminController.getReports);
+
+module.exports = router;
 
   const handleLogout = () => {
     // Handle logout logic (redirect, clear auth tokens, etc)
