@@ -5,6 +5,7 @@ const cors = require('cors');
 const auth = require('./middleware/auth'); // Ensure this file exists
 const authRoutes = require('./routes/auth'); // Ensure this file exists
 const studentRoutes = require('./routes/student'); // Ensure this file exists
+const reportsRouter = require('./routes/reports');
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'OK', db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected' });
 });
 
+app.use('/api/reports', reportsRouter);
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);

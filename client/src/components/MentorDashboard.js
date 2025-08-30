@@ -5,18 +5,15 @@ const MentorDashboard = () => {
   const navigate = useNavigate();
   const [selectedStudentId, setSelectedStudentId] = useState('');
   const [reportData, setReportData] = useState(null);
-  const [students, setStudents] = useState([]);  // Added state for students list
+  const [students, setStudents] = useState([]);
 
-  // Fetch students on component mount
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await fetch('/api/students', {  // Update API url as per backend
+        const res = await fetch('/api/students', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
-        if (!res.ok) {
-          throw new Error('Failed to fetch students');
-        }
+        if (!res.ok) throw new Error('Failed to fetch students');
         const data = await res.json();
         setStudents(data);
       } catch (err) {
@@ -28,7 +25,7 @@ const MentorDashboard = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // or your auth token key
+    localStorage.removeItem('token');
     navigate('/login');
   };
 
@@ -38,9 +35,7 @@ const MentorDashboard = () => {
       const res = await fetch(`/api/reports/student/${selectedStudentId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
-      if (!res.ok) {
-        throw new Error('Failed to generate report');
-      }
+      if (!res.ok) throw new Error('Failed to generate report');
       const data = await res.json();
       setReportData(data);
     } catch (err) {
@@ -49,15 +44,26 @@ const MentorDashboard = () => {
     }
   };
 
+  // Optionally add buttons for Add Student and Send Notification functionality
+  const handleAddStudent = () => {
+    // Navigate to add student page or show modal
+    alert("Add Student clicked");
+  }
+
+  const handleSendNotification = () => {
+    // Navigate to notification page or show modal
+    alert("Send Notification clicked");
+  }
+
   return (
-    <div className="mentor-dashboard">
+    <div style={{minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
+      {/* Header */}
       <header
-        className="dashboard-header"
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '1rem',
+          padding: '1rem 2rem',
           backgroundColor: '#2c3e50',
           color: 'white',
         }}
@@ -78,37 +84,42 @@ const MentorDashboard = () => {
         </button>
       </header>
 
-      <div className="dashboard">
-        <h1>Mentor Dashboard</h1>
-        <div className="quick-actions">
-          <button>Add Student</button>
-          <button>Generate Report</button>
-          <button>Send Notification</button>
+      {/* Main Content Area */}
+      <main style={{flexGrow: 1, padding: '2rem', background: 'linear-gradient(135deg, #8679f2, #8697f2)', color: '#fff'}}>
+        <h2 style={{ marginBottom: '1rem' }}>Quick Actions</h2>
+        <div style={{ marginBottom: '2rem' }}>
+          <button onClick={handleAddStudent} style={{marginRight: '1rem', padding: '0.5rem 1rem', cursor: 'pointer'}}>Add Student</button>
+          <button onClick={handleGenerateReport} style={{marginRight: '1rem', padding: '0.5rem 1rem', cursor: 'pointer'}}>Generate Report</button>
+          <button onClick={handleSendNotification} style={{padding: '0.5rem 1rem', cursor: 'pointer'}}>Send Notification</button>
         </div>
-      </div>
 
-      {/* Generate Report Section */}
-      <section className="generate-report-panel">
-        <h2>Generate Student Report</h2>
-        <select onChange={e => setSelectedStudentId(e.target.value)} value={selectedStudentId}>
-          <option value="">Select Student</option>
-          {/* Render students options */}
-          {students.map(student => (
-            <option key={student._id} value={student._id}>
-              {student.name}
-            </option>
-          ))}
-        </select>
-        <button onClick={handleGenerateReport}>Generate Report</button>
-        {reportData && (
-          <div className="report-result">
-            <h3>Report for {reportData.name}</h3>
-            <p>CGPA: {reportData.cgpa}</p>
-            <p>Attendance: {reportData.attendance}%</p>
-            {/* Add more detailed report info */}
-          </div>
-        )}
-      </section>
+        {/* Generate Report Section */}
+        <section style={{backgroundColor: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', maxWidth: '500px'}}>
+          <h3>Generate Student Report</h3>
+          <select 
+            onChange={e => setSelectedStudentId(e.target.value)} 
+            value={selectedStudentId}
+            style={{ padding: '0.5rem', marginBottom: '1rem', width: '100%' }}
+          >
+            <option value="">Select Student</option>
+            {students.map(student => (
+              <option key={student._id} value={student._id}>
+                {student.name}
+              </option>
+            ))}
+          </select>
+          <button onClick={handleGenerateReport} style={{padding: '0.5rem 1rem', marginBottom: '1rem', cursor: 'pointer'}}>Generate Report</button>
+
+          {reportData && (
+            <div style={{ marginTop: '1rem' }}>
+              <h4>Report for {reportData.name}</h4>
+              <p><strong>CGPA:</strong> {reportData.cgpa}</p>
+              <p><strong>Attendance:</strong> {reportData.attendance}%</p>
+              {/* You can expand this section with more report details */}
+            </div>
+          )}
+        </section>
+      </main>
     </div>
   );
 };
