@@ -1,10 +1,15 @@
+// server/controllers/mentorController.js
+
 const Student = require('../models/Student');
 const Feedback = require('../models/Feedback');
 
+/**
+ * Get all students assigned to the logged-in mentor
+ */
 exports.getMentorStudents = async (req, res) => {
   try {
     // Assuming each student document has a 'mentor' field referencing the mentor's _id
-    const students = await Student.find({ mentor: req.user._id });
+    const students = await Student.find({ mentor: req.user._id }).select('_id name email attendance cgpa');
     res.json(students);
   } catch (error) {
     console.error('Error fetching mentor students:', error);
@@ -12,9 +17,13 @@ exports.getMentorStudents = async (req, res) => {
   }
 };
 
+/**
+ * Get AI-generated alerts for mentor's students
+ * (Placeholder implementation - replace with real AI alert logic)
+ */
 exports.getAiAlerts = async (req, res) => {
   try {
-    // Placeholder: Replace with actual AI alert fetching logic for mentor's students
+    // TODO: Implement actual AI alert fetching logic based on mentor's students
     const alerts = [
       { _id: '1', studentName: 'John Doe', message: 'Low attendance alert' },
       { _id: '2', studentName: 'Jane Smith', message: 'Backlog alert' },
@@ -26,6 +35,9 @@ exports.getAiAlerts = async (req, res) => {
   }
 };
 
+/**
+ * Send feedback from mentor to a student
+ */
 exports.sendFeedback = async (req, res) => {
   try {
     const { studentId } = req.params;
