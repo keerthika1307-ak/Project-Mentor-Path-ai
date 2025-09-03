@@ -1,20 +1,69 @@
+// server/models/Student.js
+
 const mongoose = require('mongoose');
 
-const StudentSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  rollNumber: { type: String, required: true, unique: true },
-  course: { type: String },
-  academicYear: { type: String },
-  contact: { type: String },
-  address: { type: String },
-  attendance: { type: Number, default: 0 },
-  cgpa: { type: Number, default: 0.0 },
-  backlogs: { type: Number, default: 0 },
-  marks: [{ subject: String, marks: Number, grade: String }],
-  mentor: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Linked to mentor
-  department: { type: String },
-  createdAt: { type: Date, default: Date.now },
-}, { timestamps: true });
+const studentSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+  },
+  rollNumber: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+  },
+  course: {
+    type: String,
+    default: '',
+  },
+  academicYear: {
+    type: String,
+    default: '',
+  },
+  contact: {
+    type: String,
+    default: '',
+  },
+  address: {
+    type: String,
+    default: '',
+  },
+  attendance: {
+    type: Number,
+    default: 0,
+  },
+  cgpa: {
+    type: Number,
+    default: 0.0,
+  },
+  backlogs: {
+    type: Number,
+    default: 0,
+  },
+  marks: [{
+    subject: { type: String, required: true },
+    marks: { type: Number, required: true },
+    grade: { type: String, required: true },
+  }],
+  mentor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User ', // or 'Mentor' if you have a separate Mentor model
+  },
+  department: {
+    type: String,
+    default: '',
+  },
+}, {
+  timestamps: true, // adds createdAt and updatedAt automatically
+});
 
-module.exports = mongoose.model('Student', StudentSchema);
+module.exports = mongoose.model('Student', studentSchema);

@@ -1,50 +1,58 @@
-// backend/routes/mentor.js
-const express = require('express');
-const router = express.Router();
-const Student = require('../models/Student');
-const { checkMentorAuth } = require('../middleware/auth');
+// server/models/Mentor.js
 
-// Get student report by student ID or roll number
-router.get('/student-report/:studentId', checkMentorAuth, async (req, res) => {
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+
+const mentorSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  department: {
+    type: String,
+    default: '',
+  },
+  role: {
+    type: String,
+    default: 'mentor',
+  },
+  // Optional: list of students assigned to this mentor
+  students: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Student',
+  }],
+}, {
+  timestamps: true,
+});
+
+// Password hashing middleware before saving
+mentorSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+
   try {
-    const studentId = req.params.studentId;
-    const student = await Student.findById(studentId);
-
-    if (!student) {
-      return res.status(404).json({ message: 'Student not found' });
-    }
-
-    // Prepare report data
-    const report = {
-      name: student.name,
-      rollNumber: student.rollNumber,
-      course: student.course,
-      academicYear: student.academicYear,
-      attendance: student.attendance,
-      marks: student.marks,
-      cgpa: calculateCGPA(student.marks), // Implement this function
-    };
-
-    res.json(report);
-  } catch (error) {
-    console.error('Error fetching student report:', error);
-    res.status(500).json({ message: 'Server error' });
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (err) {
+    next(err);
   }
 });
 
-// Helper function to calculate CGPA
-function calculateCGPA(marksArray) {
-  if (!marksArray || marksArray.length === 0) return 0;
-  let totalPoints = 0;
-  marksArray.forEach(({ grade }) => {
-    totalPoints += gradeToPoint(grade);
-  });
-  return (totalPoints / marksArray.length).toFixed(2);
-}
+// Method to compare password for login
+mentorSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
-function gradeToPoint(grade) {
-  const map = { 'A+': 10, 'A': 9, 'B+': 8, 'B': 7, 'C+': 6, 'C': 5, 'D': 4, 'F': 0 };
-  return map[grade] || 0;
-}
-
-module.exports = router;
+module.exports = mongoose.model('Mentor', mentorSchema);
