@@ -9,6 +9,8 @@ const StudentSchema = new mongoose.Schema({
   contact: { type: String },
   address: { type: String },
   attendance: { type: Number, default: 0 },
+  cgpa: { type: Number, default: 0.0 },
+  backlogs: { type: Number, default: 0 },
   marks: [{ subject: String, marks: Number, grade: String }],
   mentor: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Linked to mentor
   department: { type: String },
