@@ -3,6 +3,7 @@
 const express = require('express');
 const Student = require('../models/Student');
 const { checkMentorAuth } = require('../middleware/auth'); // Assuming mentor auth middleware
+const feedbackController = require('../controllers/feedbackController');
 const router = express.Router();
 
 // Create student (Mentor-only)
@@ -31,5 +32,9 @@ router.get('/:mentorId', checkMentorAuth, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// Feedback routes
+router.post('/feedback/:studentId', feedbackController.addMentorFeedback);
+router.post('/feedback/ai/:studentId', feedbackController.generateAiFeedback);
 
 module.exports = router;

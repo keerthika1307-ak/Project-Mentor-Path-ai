@@ -1,20 +1,12 @@
-// backend/controllers/feedbackController.js
-
 const Feedback = require('../models/Feedback');
 const Student = require('../models/Student');
 const { generateAcademicFeedback } = require('../utils/openai');
 
-/**
- * Add feedback from mentor for a student
- */
+// Add mentor's manual feedback
 exports.addMentorFeedback = async (req, res) => {
   try {
     const { studentId } = req.params;
     const { feedback } = req.body;
-
-    if (!feedback) {
-      return res.status(400).json({ message: 'Feedback text is required' });
-    }
 
     const newFeedback = new Feedback({
       student: studentId,
@@ -31,17 +23,12 @@ exports.addMentorFeedback = async (req, res) => {
   }
 };
 
-/**
- * Generate AI-based academic feedback for a student
- */
+// Generate AI feedback based on student data
 exports.generateAiFeedback = async (req, res) => {
   try {
     const { studentId } = req.params;
     const student = await Student.findById(studentId);
-
-    if (!student) {
-      return res.status(404).json({ message: 'Student not found' });
-    }
+    if (!student) return res.status(404).json({ message: 'Student not found' });
 
     const cgpa = calculateCGPA(student.marks);
 
@@ -53,7 +40,6 @@ exports.generateAiFeedback = async (req, res) => {
     };
 
     const feedback = await generateAcademicFeedback(studentData);
-
     res.json({ feedback });
   } catch (error) {
     console.error('Error generating AI feedback:', error);
@@ -61,37 +47,18 @@ exports.generateAiFeedback = async (req, res) => {
   }
 };
 
-/**
- * Helper function to calculate CGPA from marks array
- * @param {Array} marksArray - Array of objects with a 'grade' property
- * @returns {string} CGPA rounded to 2 decimals
- */
+// Helper: Calculate CGPA from marks array
 function calculateCGPA(marksArray) {
-  if (!marksArray || marksArray.length === 0) return '0.00';
-
+  if (!marksArray || marksArray.length === 0) return 0;
   let totalPoints = 0;
   marksArray.forEach(({ grade }) => {
     totalPoints += gradeToPoint(grade);
   });
-
-  return (totalPoints / marksArray.length).toFixed(2);
+  return parseFloat((totalPoints / marksArray.length).toFixed(2));
 }
 
-/**
- * Helper function to convert grade to point
- * @param {string} grade - Grade string like 'A+', 'B', etc.
- * @returns {number} Numeric point equivalent
- */
+// Helper: Map grade to point
 function gradeToPoint(grade) {
-  const map = {
-    'A+': 10,
-    A: 9,
-    'B+': 8,
-    B: 7,
-    'C+': 6,
-    C: 5,
-    D: 4,
-    F: 0,
-  };
+  const map = { 'A+': 10, A: 9, 'B+': 8, B: 7, 'C+': 6, C: 5, D: 4, F: 0 };
   return map[grade] || 0;
 }
