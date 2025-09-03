@@ -1,3 +1,5 @@
+// server/routes/chat.js
+
 const express = require('express');
 const router = express.Router();
 const Message = require('../models/Message');
@@ -8,6 +10,7 @@ router.post('/send', async (req, res) => {
   try {
     const { sender, senderModel, receiver, receiverModel, message } = req.body;
 
+    // Validate required fields
     if (!sender || !receiver || !message || !senderModel || !receiverModel) {
       return res.status(400).json({ message: 'Missing required fields' });
     }

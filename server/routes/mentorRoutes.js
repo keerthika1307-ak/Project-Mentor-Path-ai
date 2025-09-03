@@ -3,10 +3,10 @@
 const express = require('express');
 const router = express.Router();
 const mentorController = require('../controllers/mentorController');
-const authMiddleware = require('../middleware/auth'); // your auth middleware
+const { checkMentorAuth } = require('../middleware/auth'); // Use specific mentor auth middleware
 
-// Protect all mentor routes with authentication middleware
-router.use(authMiddleware);
+// Protect all mentor routes with mentor authentication middleware
+router.use(checkMentorAuth);
 
 // Get all students assigned to the logged-in mentor
 router.get('/students', mentorController.getMentorStudents);
