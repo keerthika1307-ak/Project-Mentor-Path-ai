@@ -2,13 +2,8 @@
 
 require('dotenv').config(); // Load environment variables
 
-const { Configuration, OpenAIApi } = require('openai');
-
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY, // Your OpenAI API key from .env
-});
-
-const openai = new OpenAIApi(configuration);
+const OpenAI = require('openai');
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const LOW_CGPA_THRESHOLD = 5.0; // Define your low CGPA threshold here
 
@@ -20,42 +15,22 @@ const LOW_CGPA_THRESHOLD = 5.0; // Define your low CGPA threshold here
 async function generateAcademicFeedback(studentData) {
   const { name, cgpa, attendance, marks } = studentData;
 
+  let prompt;
   if (cgpa >= LOW_CGPA_THRESHOLD) {
-    return `Student ${name} has a satisfactory CGPA of ${cgpa}. Keep up the good work!`;
+    prompt = `Student ${name} has a CGPA of ${cgpa}, attendance of ${attendance}, and marks: ${JSON.stringify(marks)}. Write positive academic feedback.`;
+  } else {
+    prompt = `Student ${name} has a low CGPA (${cgpa}), attendance of ${attendance}, and marks: ${JSON.stringify(marks)}. Write constructive academic feedback and suggestions for improvement.`;
   }
 
-  // Prepare a prompt for the AI
-  const prompt = `
-You are an academic mentor assistant. Provide constructive feedback for the student based on the following data:
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-3.5-turbo',
+    messages: [{ role: 'user', content: prompt }],
+    max_tokens: 150,
+  });
 
-Name: ${name}
-CGPA: ${cgpa}
-Attendance: ${attendance}%
-Marks: ${marks.map(m => `${m.subject}: ${m.grade}`).join(', ')}
-
-Give suggestions on how the student can improve academically and maintain good attendance.
-`;
-
-  try {
-    const response = await openai.createChatCompletion({
-      model: 'gpt-4', // Use GPT-4 or any other chat model you prefer
-      messages: [
-        { role: 'system', content: 'You are a helpful academic mentor.' },
-        { role: 'user', content: prompt },
-      ],
-      max_tokens: 300,
-      temperature: 0.7,
-    });
-
-    const feedback = response.data.choices[0].message.content.trim();
-    return feedback;
-  } catch (error) {
-    console.error('OpenAI API error:', error);
-    throw new Error('Failed to generate academic feedback');
-  }
+  return completion.choices[0].message.content;
 }
 
 module.exports = {
-  openai,
   generateAcademicFeedback,
 };

@@ -1,6 +1,7 @@
 // server/models/Student.js
 
 const mongoose = require('mongoose');
+const feedbackController = require('../controllers/feedbackController');
 
 const studentSchema = new mongoose.Schema({
   name: {
