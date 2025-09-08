@@ -10,7 +10,7 @@ exports.addMentorFeedback = async (req, res) => {
 
     const newFeedback = new Feedback({
       student: studentId,
-      mentor: req.user._id,
+      mentor: req.user.userId,
       feedback,
       createdAt: new Date(),
     });

@@ -28,7 +28,7 @@ const auth = (requiredRole) => {
 
       // 5. Attach user info to request object for downstream handlers
       req.user = {
-        id: decoded.userId,
+        userId: decoded.userId,
         role: decoded.role,
       };
 

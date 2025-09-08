@@ -1,0 +1,4 @@
+- [x] Update server/middleware/auth.js to set req.user.userId instead of id
+- [x] Update server/routes/student.js import and replace checkMentorAuth with auth('mentor')
+- [x] Update server/controllers/feedbackController.js to use req.user.userId
+- [x] Test the server by running npm start

@@ -1,11 +1,11 @@
 const express = require('express');
 const Student = require('../models/Student');
-const { checkMentorAuth } = require('../middleware/auth');
+const auth = require('../middleware/auth');
 const { addMentorFeedback, generateAiFeedback } = require('../controllers/feedbackController');
 const router = express.Router();
 
 // Create student (Mentor-only)
-router.post('/', checkMentorAuth, async (req, res) => {
+router.post('/', auth('mentor'), async (req, res) => {
   try {
     const student = new Student({
       ...req.body,
@@ -21,7 +21,7 @@ router.post('/', checkMentorAuth, async (req, res) => {
 });
 
 // Get all students for a mentor
-router.get('/:mentorId', checkMentorAuth, async (req, res) => {
+router.get('/:mentorId', auth('mentor'), async (req, res) => {
   try {
     const students = await Student.find({ mentor: req.params.mentorId });
     res.json(students);
@@ -32,7 +32,7 @@ router.get('/:mentorId', checkMentorAuth, async (req, res) => {
 });
 
 // Feedback routes (protected)
-router.post('/feedback/:studentId', checkMentorAuth, addMentorFeedback);
-router.post('/feedback/ai/:studentId', checkMentorAuth, generateAiFeedback);
+router.post('/feedback/:studentId', auth('mentor'), addMentorFeedback);
+router.post('/feedback/ai/:studentId', auth('mentor'), generateAiFeedback);
 
 module.exports = router;
