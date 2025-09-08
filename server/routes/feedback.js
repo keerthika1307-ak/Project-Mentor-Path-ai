@@ -6,7 +6,6 @@ const router = express.Router();
 const Student = require('../models/Student');
 const { addMentorFeedback, generateAiFeedback } = require('../controllers/feedbackController');
 const authMiddleware = require('../middleware/auth'); // your auth middleware
-const { checkMentorAuth } = require('../middleware/auth'); // if you have separate mentor auth
 
 const { generateAcademicFeedback } = require('../utils/openai');
 
@@ -17,7 +16,7 @@ router.post('/:studentId/manual', authMiddleware, addMentorFeedback);
 router.get('/:studentId/ai', authMiddleware, generateAiFeedback);
 
 // Optional: POST route to generate AI feedback (only mentors)
-router.post('/generate-ai-feedback/:studentId', checkMentorAuth, async (req, res) => {
+router.post('/generate-ai-feedback/:studentId', authMiddleware('mentor'), async (req, res) => {
   try {
     const studentId = req.params.studentId;
     const student = await Student.findById(studentId);

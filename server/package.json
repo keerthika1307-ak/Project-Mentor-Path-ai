@@ -17,7 +17,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.2",
     "node-cron": "^4.2.1",
-    "openai": "^5.19.1"
+    "nodemailer": "^7.0.6",
+    "openai": "^5.19.1",
+    "twilio": "^5.9.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

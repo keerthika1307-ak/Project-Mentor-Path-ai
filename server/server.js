@@ -1,4 +1,3 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -9,6 +8,7 @@ const auth = require('./middleware/auth'); // auth middleware factory
 const authRoutes = require('./routes/auth');
 const studentRoutes = require('./routes/student');
 const reportsRouter = require('./routes/reports');
+const feedbackRoutes = require('./routes/feedback');
 const attendanceController = require('./controllers/attendanceController');
 
 const app = express();
