@@ -2,12 +2,21 @@
 
 const express = require('express');
 const router = express.Router();
-const Student = require('../models/Student');
-const { generateAcademicFeedback } = require('../utils/openai');
-const { checkMentorAuth } = require('../middleware/auth');
 
-// POST /generate-ai-feedback/:studentId
-// Protected route - only mentors can access
+const Student = require('../models/Student');
+const { addMentorFeedback, generateAiFeedback } = require('../controllers/feedbackController');
+const authMiddleware = require('../middleware/auth'); // your auth middleware
+const { checkMentorAuth } = require('../middleware/auth'); // if you have separate mentor auth
+
+const { generateAcademicFeedback } = require('../utils/openai');
+
+// Route: Add manual feedback (protected)
+router.post('/:studentId/manual', authMiddleware, addMentorFeedback);
+
+// Route: Generate AI feedback (protected)
+router.get('/:studentId/ai', authMiddleware, generateAiFeedback);
+
+// Optional: POST route to generate AI feedback (only mentors)
 router.post('/generate-ai-feedback/:studentId', checkMentorAuth, async (req, res) => {
   try {
     const studentId = req.params.studentId;
@@ -27,7 +36,7 @@ router.post('/generate-ai-feedback/:studentId', checkMentorAuth, async (req, res
       marks: student.marks,
     };
 
-    // Generate AI feedback using your utility function
+    // Generate AI feedback using utility function
     const feedback = await generateAcademicFeedback(studentData);
 
     res.json({ feedback });
@@ -44,7 +53,7 @@ function calculateCGPA(marksArray) {
   marksArray.forEach(({ grade }) => {
     totalPoints += gradeToPoint(grade);
   });
-  return (totalPoints / marksArray.length).toFixed(2);
+  return parseFloat((totalPoints / marksArray.length).toFixed(2));
 }
 
 // Map letter grades to numeric points

@@ -20,6 +20,10 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Use feedback routes under /feedback
+app.use('/feedback', feedbackRoutes);
+
+
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -40,6 +44,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/students', auth('mentor'), studentRoutes);
 
 app.use('/api/reports', reportsRouter);
+
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
