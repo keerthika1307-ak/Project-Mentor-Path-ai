@@ -57,7 +57,7 @@ const studentSchema = new mongoose.Schema({
   }],
   mentor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User ', // or 'Mentor' if you have a separate Mentor model
+    ref: 'Mentor', // Reference to Mentor model
   },
   department: {
     type: String,

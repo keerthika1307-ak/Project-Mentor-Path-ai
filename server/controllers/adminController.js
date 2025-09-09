@@ -5,6 +5,9 @@ const Student = require('../models/Student');
 const Mentor = require('../models/Mentor');
 const Program = require('../models/Program'); // Assuming you have a Program model
 const Mentorship = require('../models/Mentorship'); // Assuming mentorship relationships stored here
+const OpenAI = require('openai');
+const twilio = require('twilio');
+const nodemailer = require('nodemailer');
 
 /**
  * Get overall system metrics
@@ -178,4 +181,15 @@ exports.generateReport = async (req, res) => {
     console.error('Error generating report:', error);
     res.status(500).json({ message: 'Server error generating report' });
   }
+};
+
+/**
+ * Check API status for external services
+ */
+exports.getApiStatus = (req, res) => {
+  const openai = !!process.env.OPENAI_API_KEY;
+  const twilio = !!(process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN);
+  const nodemailer = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+
+  res.json({ openai, twilio, nodemailer });
 };

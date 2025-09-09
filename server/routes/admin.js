@@ -3,7 +3,9 @@
 const express = require('express');
 const router = express.Router();
 const Student = require('../models/Student');
+const Mentor = require('../models/Mentor');
 const { checkAdminAuth } = require('../middleware/auth'); // Adjust middleware import as per your project
+const { getApiStatus } = require('../controllers/adminController');
 
 // Route: Add new student (Admin only)
 router.post('/add-student', checkAdminAuth, async (req, res) => {
@@ -65,5 +67,8 @@ router.get('/reports', checkAdminAuth, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// Route: Get API status (Admin only)
+router.get('/api-status', checkAdminAuth, getApiStatus);
 
 module.exports = router;

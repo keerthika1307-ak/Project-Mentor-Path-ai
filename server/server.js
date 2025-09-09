@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth');
 const studentRoutes = require('./routes/student');
 const reportsRouter = require('./routes/reports');
 const feedbackRoutes = require('./routes/feedback');
+const adminRoutes = require('./routes/admin');
 const attendanceController = require('./controllers/attendanceController');
 
 const app = express();
@@ -44,6 +45,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/students', auth('mentor'), studentRoutes);
 
 app.use('/api/reports', reportsRouter);
+
+app.use('/api/admin', adminRoutes);
 
 
 // Health check endpoint
