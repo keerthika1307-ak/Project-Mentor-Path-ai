@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
-import MentorDashboard from './components/MentorDashboard';
-import StudentDashboard from './components/StudentDashboard';
-import AdminDashboard from './components/AdminDashboard';
+import MentorDashboard from './components/mentor/MentorDashboard';
+import StudentDashboard from './components/student/StudentDashboard';
+import AdminDashboard from './components/admin/AdminDashboard';
 import Register from './components/Register';
 import RequireAuth from './components/RequireAuth';
 import AdminRoutes from './components/admin/AdminRoutes';
-import Login from './components/auth/Login';
 import MentorRoutes from './components/mentor/MentorRoutes';
 
 

@@ -4,11 +4,11 @@ const express = require('express');
 const router = express.Router();
 const Student = require('../models/Student');
 const Mentor = require('../models/Mentor');
-const { checkAdminAuth } = require('../middleware/auth'); // Adjust middleware import as per your project
+const auth = require('../middleware/auth');
 const { getApiStatus } = require('../controllers/adminController');
 
 // Route: Add new student (Admin only)
-router.post('/add-student', checkAdminAuth, async (req, res) => {
+router.post('/add-student', auth('admin'), async (req, res) => {
   try {
     const { name, email, rollNumber, course, academicYear, contact, address, department, mentor } = req.body;
 
@@ -48,7 +48,7 @@ router.post('/add-student', checkAdminAuth, async (req, res) => {
 });
 
 // Route: Get system reports (Admin only)
-router.get('/reports', checkAdminAuth, async (req, res) => {
+router.get('/reports', auth('admin'), async (req, res) => {
   try {
     // Example: aggregate some system metrics
     const totalUsers = await Student.countDocuments() + await Mentor.countDocuments(); // Assuming Mentor model imported
@@ -69,6 +69,6 @@ router.get('/reports', checkAdminAuth, async (req, res) => {
 });
 
 // Route: Get API status (Admin only)
-router.get('/api-status', checkAdminAuth, getApiStatus);
+router.get('/api-status', auth('admin'), getApiStatus);
 
 module.exports = router;

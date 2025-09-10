@@ -1,16 +1,7 @@
-// backend/utils/alerts.js
 const twilio = require('twilio');
-const nodemailer = require('nodemailer');
+const { sendEmail } = require('./emailService'); // Adjust path if needed
 
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail', // or your email service provider
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
 
 async function sendSmsAlert(to, message) {
   try {
@@ -25,18 +16,9 @@ async function sendSmsAlert(to, message) {
   }
 }
 
-async function sendEmailAlert(to, subject, text) {
-  try {
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to,
-      subject,
-      text,
-    });
-    console.log('Email sent to', to);
-  } catch (error) {
-    console.error('Error sending Email:', error);
-  }
+// Wrapper function that calls sendEmail from emailService.js
+async function sendEmailAlert(to, subject, htmlContent) {
+  return sendEmail(to, subject, htmlContent);
 }
 
 module.exports = { sendSmsAlert, sendEmailAlert };
